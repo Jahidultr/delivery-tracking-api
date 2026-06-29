@@ -4,6 +4,7 @@ const cors = require('cors');
 const auth = require('./middleware/auth');
 const ordersRoute = require('./routes/orders');
 const trackingRoute = require('./routes/tracking');
+const statsRoute = require('./routes/stats');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Rate limiting — max 100 requests per 15 minutes
+// Rate limiting
 const requestCounts = {};
 const RATE_LIMIT = 100;
 const WINDOW_MS = 15 * 60 * 1000;
@@ -25,14 +26,10 @@ app.use((req, res, next) => {
     requestCounts[ip] = { count: 1, startTime: now };
   } else {
     const elapsed = now - requestCounts[ip].startTime;
-
     if (elapsed > WINDOW_MS) {
-      // Reset window
       requestCounts[ip] = { count: 1, startTime: now };
     } else {
       requestCounts[ip].count++;
-
-      // Block if limit exceeded
       if (requestCounts[ip].count > RATE_LIMIT) {
         return res.status(429).json({
           success: false,
@@ -44,7 +41,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// Home route — no auth required
+// Home route
 app.get('/', (req, res) => {
   res.json({
     message: "🚚 Delivery Tracking API Running!",
@@ -53,18 +50,22 @@ app.get('/', (req, res) => {
       filterByStatus: "GET /api/orders?status=pending",
       filterByName: "GET /api/orders?customerName=Rahim",
       pagination: "GET /api/orders?page=1&limit=5",
+      orderSummary: "GET /api/orders/summary",
       getOneOrder: "GET /api/orders/:orderId",
       createOrder: "POST /api/orders/create",
       updateStatus: "PUT /api/orders/:orderId/status",
       deleteOrder: "DELETE /api/orders/:orderId",
-      trackOrder: "GET /api/tracking/:orderId"
+      trackOrder: "GET /api/tracking/:orderId",
+      autoUpdateTracking: "POST /api/tracking/update/:orderId",
+      statistics: "GET /api/stats"
     }
   });
 });
 
-// Protected routes — API key required
+// Protected routes
 app.use('/api/orders', auth, ordersRoute);
 app.use('/api/tracking', auth, trackingRoute);
+app.use('/api/stats', auth, statsRoute);
 
 // Handle unknown routes
 app.use((req, res) => {
