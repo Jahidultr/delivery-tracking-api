@@ -108,7 +108,7 @@ POST https://delivery-tracking-api-production.up.railway.app/api/orders/create
 
 ```json
 {
-  "customerName": "Bangla",
+  "customerName": "Jahidul Islam",
   "phone": "01700000000",
   "address": "Mirpur, Dhaka",
   "items": [
