@@ -28,7 +28,7 @@ const orders = [
     status: "pending",
     createdAt: "2024-01-12",
     deliveredAt: null
-  }
+  },
 
     {
     orderId: "ORD-004",
@@ -39,7 +39,7 @@ const orders = [
     status: "pending",
     createdAt: "2024-01-12",
     deliveredAt: null
-  }
+  },
     
     {
     orderId: "ORD-005",
@@ -50,8 +50,8 @@ const orders = [
     status: "pending",
     createdAt: "2024-01-12",
     deliveredAt: null
-  }
-      {
+  },
+    {
     orderId: "ORD-006",
     customerName: "Nadia",
     phone: "01611122233",
@@ -60,9 +60,9 @@ const orders = [
     status: "pending",
     createdAt: "2024-01-12",
     deliveredAt: null
-  }
+   },
       
-        {
+    {
     orderId: "ORD-007",
     customerName: "Jahid",
     phone: "01611122233",
@@ -71,7 +71,7 @@ const orders = [
     status: "pending",
     createdAt: "2024-01-12",
     deliveredAt: null
-  }
+  },
         
     {
     orderId: "ORD-008",
@@ -82,7 +82,7 @@ const orders = [
     status: "pending",
     createdAt: "2024-01-12",
     deliveredAt: null
-  }
+  },
     
 ];
 
