@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { orders } = require('../data/mockData');
 
-// GET - Shob orders dekhao
+// GET - All Orders 
 router.get('/', (req, res) => {
   res.json({
     success: true,
@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
   });
 });
 
-// GET - Ekta order dekhao ID diye
+// GET - One Orders Check in Id Number
 router.get('/:orderId', (req, res) => {
   const order = orders.find(o => o.orderId === req.params.orderId);
 
@@ -25,7 +25,7 @@ router.get('/:orderId', (req, res) => {
   res.json({ success: true, order });
 });
 
-// POST - Notun order create koro
+// POST - New Order create 
 router.post('/create', (req, res) => {
   const { customerName, phone, address, items } = req.body;
 
@@ -56,7 +56,7 @@ router.post('/create', (req, res) => {
   });
 });
 
-// PUT - Order status update koro
+// PUT - Order status update 
 router.put('/:orderId/status', (req, res) => {
   const order = orders.find(o => o.orderId === req.params.orderId);
 
@@ -73,7 +73,7 @@ router.put('/:orderId/status', (req, res) => {
   if (!validStatuses.includes(status)) {
     return res.status(400).json({
       success: false,
-      message: `Status hobe: ${validStatuses.join(', ')}`
+      message: `Status : ${validStatuses.join(', ')}`
     });
   }
 
@@ -89,7 +89,7 @@ router.put('/:orderId/status', (req, res) => {
   });
 });
 
-// DELETE - Order cancel koro
+// DELETE - Order cancel
 router.delete('/:orderId', (req, res) => {
   const index = orders.findIndex(o => o.orderId === req.params.orderId);
 

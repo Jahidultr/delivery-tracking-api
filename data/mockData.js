@@ -29,6 +29,61 @@ const orders = [
     createdAt: "2024-01-12",
     deliveredAt: null
   }
+
+    {
+    orderId: "ORD-004",
+    customerName: "Fuad ",
+    phone: "01611122233",
+    address: "Chittagong, Agrabad",
+    items: ["Laptop", "Mouse", "Keyboard"],
+    status: "pending",
+    createdAt: "2024-01-12",
+    deliveredAt: null
+  }
+    
+    {
+    orderId: "ORD-005",
+    customerName: "Faruk",
+    phone: "01611122233",
+    address: "Chittagong, Agrabad",
+    items: ["Laptop", "Mouse", "Keyboard"],
+    status: "pending",
+    createdAt: "2024-01-12",
+    deliveredAt: null
+  }
+      {
+    orderId: "ORD-006",
+    customerName: "Nadia",
+    phone: "01611122233",
+    address: "Chittagong, Agrabad",
+    items: ["Laptop", "Mouse", "Keyboard"],
+    status: "pending",
+    createdAt: "2024-01-12",
+    deliveredAt: null
+  }
+      
+        {
+    orderId: "ORD-007",
+    customerName: "Jahid",
+    phone: "01611122233",
+    address: "Chittagong, Agrabad",
+    items: ["Laptop", "Mouse", "Keyboard"],
+    status: "pending",
+    createdAt: "2024-01-12",
+    deliveredAt: null
+  }
+        
+    {
+    orderId: "ORD-008",
+    customerName: "Tuhin",
+    phone: "01611122233",
+    address: "Chittagong, Agrabad",
+    items: ["Laptop", "Mouse", "Keyboard"],
+    status: "pending",
+    createdAt: "2024-01-12",
+    deliveredAt: null
+  }
+    
 ];
 
 const trackingHistory = {

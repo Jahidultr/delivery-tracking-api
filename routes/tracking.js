@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { orders, trackingHistory } = require('../data/mockData');
 
-// GET - Order track koro
+// GET - Order track
 router.get('/:orderId', (req, res) => {
   const order = orders.find(o => o.orderId === req.params.orderId);
 
