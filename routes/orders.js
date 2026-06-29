@@ -6,14 +6,10 @@ const { orders } = require('../data/mockData');
 router.get('/', (req, res) => {
   let result = [...orders];
 
-  // Filter by status
   if (req.query.status) {
-    result = result.filter(o =>
-      o.status === req.query.status
-    );
+    result = result.filter(o => o.status === req.query.status);
   }
 
-  // Filter by customer name
   if (req.query.customerName) {
     result = result.filter(o =>
       o.customerName.toLowerCase()
@@ -21,20 +17,34 @@ router.get('/', (req, res) => {
     );
   }
 
-  // Pagination
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
   const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
-  const paginated = result.slice(startIndex, endIndex);
+  const paginated = result.slice(startIndex, startIndex + limit);
 
   res.json({
     success: true,
     total: result.length,
-    page: page,
-    limit: limit,
+    page,
+    limit,
     totalPages: Math.ceil(result.length / limit),
     orders: paginated
+  });
+});
+
+// GET - Order summary by status
+router.get('/summary', (req, res) => {
+  const summary = {
+    total: orders.length,
+    pending: orders.filter(o => o.status === 'pending').length,
+    inTransit: orders.filter(o => o.status === 'in-transit').length,
+    delivered: orders.filter(o => o.status === 'delivered').length,
+    cancelled: orders.filter(o => o.status === 'cancelled').length
+  };
+
+  res.json({
+    success: true,
+    summary
   });
 });
 
@@ -56,7 +66,6 @@ router.get('/:orderId', (req, res) => {
 router.post('/create', (req, res) => {
   const { customerName, phone, address, items } = req.body;
 
-  // Check required fields
   if (!customerName || !phone || !address || !items) {
     return res.status(400).json({
       success: false,
@@ -70,7 +79,6 @@ router.post('/create', (req, res) => {
     });
   }
 
-  // Validate phone number (11 digits)
   if (!/^[0-9]{11}$/.test(phone)) {
     return res.status(400).json({
       success: false,
@@ -78,7 +86,6 @@ router.post('/create', (req, res) => {
     });
   }
 
-  // Validate items array
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({
       success: false,
@@ -86,7 +93,6 @@ router.post('/create', (req, res) => {
     });
   }
 
-  // Create new order object
   const newOrder = {
     orderId: `ORD-00${orders.length + 1}`,
     customerName,
@@ -111,7 +117,6 @@ router.post('/create', (req, res) => {
 router.put('/:orderId/status', (req, res) => {
   const order = orders.find(o => o.orderId === req.params.orderId);
 
-  // Check if order exists
   if (!order) {
     return res.status(404).json({
       success: false,
@@ -122,7 +127,6 @@ router.put('/:orderId/status', (req, res) => {
   const { status } = req.body;
   const validStatuses = ["pending", "in-transit", "delivered", "cancelled"];
 
-  // Validate status value
   if (!validStatuses.includes(status)) {
     return res.status(400).json({
       success: false,
@@ -130,10 +134,8 @@ router.put('/:orderId/status', (req, res) => {
     });
   }
 
-  // Update status
   order.status = status;
 
-  // Set delivered date if status is delivered
   if (status === "delivered") {
     order.deliveredAt = new Date().toISOString().split('T')[0];
   }
@@ -149,7 +151,6 @@ router.put('/:orderId/status', (req, res) => {
 router.delete('/:orderId', (req, res) => {
   const index = orders.findIndex(o => o.orderId === req.params.orderId);
 
-  // Check if order exists
   if (index === -1) {
     return res.status(404).json({
       success: false,
@@ -164,23 +165,5 @@ router.delete('/:orderId', (req, res) => {
     message: "Order deleted successfully!"
   });
 });
-
-// GET - Order summary by status
-router.get('/summary', (req, res) => {
-  const summary = {
-    total: orders.length,
-    pending: orders.filter(o => o.status === 'pending').length,
-    inTransit: orders.filter(o => o.status === 'in-transit').length,
-    delivered: orders.filter(o => o.status === 'delivered').length,
-    cancelled: orders.filter(o => o.status === 'cancelled').length
-  };
-
-  res.json({
-    success: true,
-    summary
-  });
-});
-
-
 
 module.exports = router;
