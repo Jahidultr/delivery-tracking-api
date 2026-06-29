@@ -2,14 +2,15 @@ const express = require('express');
 const router = express.Router();
 const { orders, trackingHistory } = require('../data/mockData');
 
-// GET - Order track
+// GET - Track order by ID
 router.get('/:orderId', (req, res) => {
   const order = orders.find(o => o.orderId === req.params.orderId);
 
+  // Check if order exists
   if (!order) {
     return res.status(404).json({
       success: false,
-      message: "Order not found!"
+      message: `${req.params.orderId} does not exist. Valid orders: ORD-001 to ORD-00${orders.length}`
     });
   }
 
